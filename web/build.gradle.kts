@@ -1,15 +1,20 @@
 plugins {
-    kotlin("jvm") version "1.6.10"
+    kotlin("jvm")
     application
+    id("io.gitlab.arturbosch.detekt")
+    id("org.jlleitschuh.gradle.ktlint")
 }
 
 sourceSets.main {
+    java {
+        srcDirs("src/main/kotlin")
+    }
     resources {
         srcDirs("../resources")
     }
 }
 
-application.mainClass.set("RunWebAppKt")
+application.mainClass.set("ru.disenchanted.web.RunWebAppKt")
 
 tasks {
     named("jar") {
@@ -21,7 +26,6 @@ tasks {
         } else {
             "npm"
         }
-        val outputDirectory = File(sourceSets.main.get().output.resourcesDir?.path, "web")
         doLast {
             ProcessBuilder(
                 npmName,
@@ -33,7 +37,7 @@ tasks {
                 .redirectErrorStream(true)
                 .redirectOutput(File(buildDir.apply { mkdir() }, "buildJsOutput.txt"))
                 .apply {
-                    environment()["outputDir"] = outputDirectory.path
+                    environment()["outputDir"] = sourceSets.main.get().output.resourcesDir?.path
                 }
                 .start()
                 .waitFor()
