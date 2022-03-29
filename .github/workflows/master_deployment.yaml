@@ -1,0 +1,18 @@
+name: Master branch deployment
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run deployment script on the server
+        uses: fifsky/ssh-action@master
+        with:
+          command: ./update_disenchanted.sh
+          user: root
+          host: ${{ secrets.SERVER_HOST }}
+          key: ${{ secrets.SSH_KEY }}
