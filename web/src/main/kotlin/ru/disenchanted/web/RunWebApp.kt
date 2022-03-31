@@ -15,7 +15,7 @@ fun main() {
 private fun getModuleFilePath(): String {
     val jarPath = Paths.get(::main::class.java.protectionDomain.codeSource.location.toURI())
     return FileSystems.newFileSystem(jarPath, null).use { fileSystem ->
-        val source = fileSystem.getPath("/web")
+        val source = fileSystem.getPath("/")
         val destination = Files.createTempDirectory(TEMP_DIR_PREFIX)
         Files.walkFileTree(source, CopyDirectory(source, destination))
         destination.toString()
