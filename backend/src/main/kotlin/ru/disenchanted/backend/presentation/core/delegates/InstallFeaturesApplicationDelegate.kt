@@ -3,6 +3,7 @@ package ru.disenchanted.backend.presentation.core.delegates
 import io.ktor.application.Application
 import io.ktor.application.install
 import io.ktor.features.CORS
+import io.ktor.features.CallLogging
 import io.ktor.features.Compression
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.gzip
@@ -30,6 +31,9 @@ class InstallFeaturesApplicationDelegate @Inject constructor(
             }
             install(Compression) {
                 gzip()
+            }
+            if (application.environment.developmentMode) {
+                install(CallLogging)
             }
         }
     }
