@@ -30,6 +30,8 @@ sourceSets.main {
         implementation("org.litote.kmongo:kmongo-id-serialization:$kmongoVersion")
 
         implementation("org.mindrot:jbcrypt:0.4")
+
+        implementation("ch.qos.logback:logback-classic:1.2.11")
     }
     resources {
         srcDirs("../resources")
