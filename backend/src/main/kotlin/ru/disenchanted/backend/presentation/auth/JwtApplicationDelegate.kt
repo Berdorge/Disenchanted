@@ -10,6 +10,8 @@ import ru.disenchanted.backend.domain.auth.JwtDataSource
 import ru.disenchanted.backend.presentation.core.delegates.ApplicationDelegate
 import javax.inject.Inject
 
+const val AUTH_NAME = "auth_jwt"
+
 class JwtApplicationDelegate @Inject constructor(
     private val application: Application,
     private val jwtDataSource: JwtDataSource,
@@ -18,7 +20,7 @@ class JwtApplicationDelegate @Inject constructor(
     override fun onApplicationReady() {
         val (secret, issuer, audience) = jwtDataSource.jwtData
         application.install(Authentication) {
-            jwt {
+            jwt(AUTH_NAME) {
                 val verifier = JWT.require(Algorithm.HMAC256(secret))
                     .withAudience(audience)
                     .withIssuer(issuer)

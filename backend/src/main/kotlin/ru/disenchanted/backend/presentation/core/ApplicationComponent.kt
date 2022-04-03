@@ -12,7 +12,11 @@ import javax.inject.Singleton
 @Singleton
 @Component(modules = [DataModule::class, DomainModule::class, PresentationModule::class])
 interface ApplicationComponent {
-    val delegates: Set<@JvmSuppressWildcards ApplicationDelegate>
+    @get:Initializer
+    val initializers: Set<@JvmSuppressWildcards ApplicationDelegate>
+
+    @get:Router
+    val routers: Set<@JvmSuppressWildcards ApplicationDelegate>
 
     @Component.Factory
     interface Factory {
