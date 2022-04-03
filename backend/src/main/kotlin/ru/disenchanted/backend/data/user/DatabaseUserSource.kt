@@ -1,6 +1,7 @@
 package ru.disenchanted.backend.data.user
 
 import kotlinx.coroutines.withContext
+import org.litote.kmongo.Id
 import org.litote.kmongo.coroutine.CoroutineCollection
 import org.litote.kmongo.eq
 import ru.disenchanted.backend.domain.core.DispatchersProvider
@@ -18,9 +19,11 @@ class DatabaseUserSource @Inject constructor(
         collection.findOne(User::username eq username)
     }
 
-    override suspend fun insertUser(user: User) {
-        withContext(dispatchersProvider.io) {
-            collection.insertOne(user)
-        }
+    override suspend fun getUserById(id: Id<User>): User? = withContext(dispatchersProvider.io) {
+        collection.findOne(User::id eq id)
+    }
+
+    override suspend fun insertUser(user: User) = withContext(dispatchersProvider.io) {
+        collection.insertOne(user).wasAcknowledged()
     }
 }

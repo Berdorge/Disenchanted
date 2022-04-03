@@ -9,7 +9,10 @@ fun main(args: Array<String>) = EngineMain.main(args)
 fun Application.mainModule() {
     val component = DaggerApplicationComponent.factory()
         .create(this)
-    for (delegate in component.delegates) {
-        delegate.onApplicationReady()
+    for (initializer in component.initializers) {
+        initializer.onApplicationReady()
+    }
+    for (router in component.routers) {
+        router.onApplicationReady()
     }
 }

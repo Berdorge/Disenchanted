@@ -1,5 +1,7 @@
 package ru.disenchanted.backend.domain.auth
 
+import org.litote.kmongo.Id
+
 interface JwtGenerator {
-    fun generate(username: String): String
+    fun generate(id: Id<*>): String
 }
