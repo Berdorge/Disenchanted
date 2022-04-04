@@ -32,9 +32,7 @@ class InstallFeaturesApplicationDelegate @Inject constructor(
             install(Compression) {
                 gzip()
             }
-            if (application.environment.developmentMode) {
-                install(CallLogging)
-            }
+            install(CallLogging)
         }
     }
 }
