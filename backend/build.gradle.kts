@@ -32,6 +32,7 @@ sourceSets.main {
         implementation("org.mindrot:jbcrypt:0.4")
 
         implementation("ch.qos.logback:logback-classic:1.2.11")
+        implementation("org.codehaus.janino:janino:3.1.6")
     }
     resources {
         srcDirs("../resources")
