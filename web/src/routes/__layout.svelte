@@ -2,6 +2,7 @@
     import { session } from "$app/stores"
     import HeaderNavLink, { FullColorCondition } from "$lib/components/HeaderNavLink.svelte"
     import "reflect-metadata"
+    import "regenerator-runtime"
 </script>
 
 <header class="shadow-md fixed top-0 left-0 z-10 w-screen h-12">
