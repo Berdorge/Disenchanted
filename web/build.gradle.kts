@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.Path
+
 plugins {
     kotlin("jvm")
     application
@@ -9,9 +12,6 @@ sourceSets.main {
     java {
         srcDirs("src/main/kotlin")
     }
-    resources {
-        srcDirs("../resources")
-    }
 }
 
 application.mainClass.set("ru.disenchanted.web.RunWebAppKt")
@@ -21,26 +21,37 @@ tasks {
         dependsOn("buildJs")
     }
     create("buildJs") {
+        val outputDir = checkNotNull(sourceSets.main.get().output.resourcesDir) {
+            "Resource directory is not configured."
+        }
         val npmName = if (System.getProperty("os.name").contains("win", ignoreCase = true)) {
             "npm.cmd"
         } else {
             "npm"
         }
-        doLast {
-            ProcessBuilder(
-                npmName,
-                "run",
-                "build",
-                "--prefix",
-                projectDir.path
-            )
-                .redirectErrorStream(true)
-                .redirectOutput(File(buildDir.apply { mkdir() }, "buildJsOutput.txt"))
+        doFirst {
+            val process = ProcessBuilder(npmName, "run", "build")
+                .directory(projectDir)
                 .apply {
-                    environment()["outputDir"] = sourceSets.main.get().output.resourcesDir?.path
+                    environment()["outputDir"] = outputDir.path
                 }
                 .start()
-                .waitFor()
+            while (process.isAlive) {
+                if (process.errorStream.available() > 0) {
+                    System.err.write(process.errorStream.read())
+                }
+                if (process.inputStream.available() > 0) {
+                    System.out.write(process.inputStream.read())
+                }
+            }
+            check(process.waitFor() == 0) {
+                "JS build failed. See the logs above."
+            }
+        }
+        doLast {
+            val source = Path.of(File(projectDir, "package.json").path)
+            val destination = Path.of(File(outputDir, "package.json").path)
+            Files.copy(source, destination)
         }
     }
 }
