@@ -6,7 +6,7 @@
 
 <header class="shadow-md fixed top-0 left-0 z-10 w-screen h-12">
     <nav class="flex max-w-3xl m-auto">
-        <HeaderNavLink title="🤩 Disenchanted" href="" fullColorWhen={FullColorCondition.EQUALS} />
+        <HeaderNavLink title="Главная" href="" fullColorWhen={FullColorCondition.EQUALS} />
         <div class="flex-1" />
         <HeaderNavLink title="Университеты" href="universities" />
         <HeaderNavLink title="Активности" href="activities" />

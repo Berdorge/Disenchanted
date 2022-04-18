@@ -35,7 +35,7 @@ class DatabaseUniversityProgramSource @Inject constructor(
         universityId: String,
         programId: String
     ): UniversityProgram? {
-        val queryId = UniversityProgramId(UniversityProgramIdField(universityId, programId))
+        val queryId = UniversityProgramId(universityId, programId)
         val entity = withContext(dispatchersProvider.io) {
             collection.findOne(UniversityProgramEntity::id eq queryId)
         }
@@ -51,7 +51,7 @@ class DatabaseUniversityProgramSource @Inject constructor(
     ) = withContext(dispatchersProvider.io) {
         collection.find(
             UniversityProgramEntity::id /
-                UniversityProgramIdField::universityId eq
+                UniversityProgramId::universityId eq
                 universityId
         )
             .toList()

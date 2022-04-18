@@ -4,5 +4,6 @@ export class Activity {
     @Expose({ name: "_id" })
     readonly id: string
     readonly name: string
-    readonly parentId: string
+    readonly parentId: string | null
+    readonly logoUrl: string | null
 }
