@@ -14,8 +14,8 @@ import ru.disenchanted.backend.domain.auth.SignUpRequest
 import ru.disenchanted.backend.domain.core.DefaultContext
 import ru.disenchanted.backend.domain.user.User
 import ru.disenchanted.backend.domain.user.UserSource
-import ru.disenchanted.backend.domain.user.withJwt
 import ru.disenchanted.backend.presentation.core.delegates.ApplicationDelegate
+import ru.disenchanted.backend.presentation.user.withJwt
 import javax.inject.Inject
 
 class AuthRouter @Inject constructor(

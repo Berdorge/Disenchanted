@@ -1,5 +1,5 @@
 import { COOKIE_JWT } from "$lib/core/cookies"
-import { UserApi } from "$lib/core/user/UserApi"
+import { UserApi } from "$lib/user/UserApi"
 import type { GetSession, Handle } from "@sveltejs/kit"
 import { parse } from "cookie"
 import { container } from "tsyringe"

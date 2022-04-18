@@ -12,7 +12,6 @@ import io.ktor.routing.routing
 import ru.disenchanted.backend.domain.auth.JwtPayload
 import ru.disenchanted.backend.domain.core.DefaultContext
 import ru.disenchanted.backend.domain.user.UserSource
-import ru.disenchanted.backend.domain.user.asExposable
 import ru.disenchanted.backend.presentation.auth.AUTH_NAME
 import ru.disenchanted.backend.presentation.auth.JwtValidator
 import ru.disenchanted.backend.presentation.core.delegates.ApplicationDelegate

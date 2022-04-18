@@ -7,7 +7,7 @@
 
 <script lang="ts">
     import { page } from "$app/stores"
-    import { beginsWith } from "$lib/core/utils/String"
+    import { beginsWith } from "$lib/utils/String"
 
     export let fullColorWhen: FullColorCondition = FullColorCondition.BEGINS_WITH
     export let title: string

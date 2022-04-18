@@ -1,5 +1,5 @@
-import { HttpClientToken } from "$lib/core/network/HttpClient"
-import type { User } from "$lib/core/user/User"
+import { HttpClientToken } from "$lib/network/HttpClient"
+import type { User } from "$lib/user/User"
 import type { AxiosInstance } from "axios"
 import { StatusCodes } from "http-status-codes"
 import { inject, singleton } from "tsyringe"

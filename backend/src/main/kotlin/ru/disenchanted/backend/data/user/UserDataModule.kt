@@ -19,7 +19,8 @@ interface UserDataModule {
     class DatabaseModule {
         @Provides
         @Singleton
-        fun provideUserCollection(database: CoroutineDatabase): CoroutineCollection<User> =
-            database.getCollection()
+        fun provideUserCollection(
+            database: CoroutineDatabase
+        ): CoroutineCollection<User> = database.getCollection()
     }
 }
