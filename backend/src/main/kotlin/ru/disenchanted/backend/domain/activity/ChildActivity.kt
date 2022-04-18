@@ -4,16 +4,16 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Activity(
+data class ChildActivity(
     @SerialName("_id")
     val id: String,
 
     @SerialName("name")
     val name: String,
 
-    @SerialName("parentId")
-    val parentId: String?,
-
     @SerialName("logoUrl")
-    val logoUrl: String?
+    val logoUrl: String?,
+
+    @SerialName("parent")
+    val parent: Activity?
 )

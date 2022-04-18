@@ -31,8 +31,11 @@
 {:else}
     <div class="max-w-2xl m-auto">
         {#each activities as activity}
-            <a href="/activities/{activity.id}" class="block underline text-center text-l p-2">
-                {activity.name}
+            <a href="/activities/{activity.id}" class="flex justify-between items-center p-2">
+                {#if activity.logoUrl}
+                    <img class="w-16 h-16 mr-4" src={activity.logoUrl} alt="Логотип" />
+                {/if}
+                <p class="flex-1 underline text-center text-l">{activity.name}</p>
             </a>
         {/each}
     </div>

@@ -1,5 +1,7 @@
-import { Activity } from "$lib/activity/Activity"
+import { DescribedActivity } from "$lib/activity/DescribedActivity"
 import { HttpClientToken } from "$lib/network/HttpClient"
+import { University } from "$lib/university/University"
+import { wrapResponseDataToArray } from "$lib/utils/Response"
 import type { AxiosInstance } from "axios"
 import { plainToInstance } from "class-transformer"
 import { inject, singleton } from "tsyringe"
@@ -12,9 +14,24 @@ export class UniversityProgramActivityApi {
         this.client = client
     }
 
-    getUniversityActivities = (universityId: string): Promise<Array<Activity>> =>
+    getActivityUniversities = (activityId: string): Promise<Array<University>> =>
+        this.client
+            .get(`activities/${activityId}/universities`)
+            .then(wrapResponseDataToArray)
+            .then((universities) => plainToInstance(University, universities))
+
+    getUniversityActivities = (universityId: string): Promise<Array<DescribedActivity>> =>
         this.client
             .get(`universities/${universityId}/activities`)
-            .then((response) => (Array.isArray(response.data) ? response.data : [response.data]))
-            .then((activities) => plainToInstance(Activity, activities))
+            .then(wrapResponseDataToArray)
+            .then((activities) => plainToInstance(DescribedActivity, activities))
+
+    getUniversityProgramActivities = (
+        universityId: string,
+        programId: string
+    ): Promise<Array<DescribedActivity>> =>
+        this.client
+            .get(`universities/${universityId}/programs/${programId}/activities`)
+            .then(wrapResponseDataToArray)
+            .then((activities) => plainToInstance(DescribedActivity, activities))
 }

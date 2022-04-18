@@ -1,15 +1,16 @@
 package ru.disenchanted.backend.data.activity
 
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import org.litote.kmongo.Id
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-class UniversityProgramActivityId(serializedField: String) : Id<UniversityProgramActivityEntity> {
-    private val field: UniversityProgramActivityIdField = Json.decodeFromString(serializedField)
+@Serializable
+data class UniversityProgramActivityId(
+    @SerialName("universityId")
+    val universityId: String,
 
-    val activityId = field.activityId
-    val universityId = field.universityId
+    @SerialName("programId")
+    val programId: String?,
 
-    override fun toString(): String = Json.encodeToString(field)
-}
+    @SerialName("activityId")
+    val activityId: String
+)

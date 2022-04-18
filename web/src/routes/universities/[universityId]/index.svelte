@@ -1,12 +1,12 @@
 <script lang="ts" context="module">
     import { StatusCodes } from "http-status-codes"
     import { container } from "tsyringe"
-    import type { Load } from "./[id]"
+    import type { Load } from "./index"
     import { UniversityApi } from "$lib/university/UniversityApi"
 
     export const load: Load = async ({ params }) => {
         const api = container.resolve(UniversityApi)
-        const university = await api.getUniversity(params.id)
+        const university = await api.getUniversity(params.universityId)
 
         if (university === null) {
             return { status: StatusCodes.NOT_FOUND }
@@ -30,8 +30,12 @@
 
 <Title caption={university.name} />
 
-<h1 class="text-2xl text-gray-800 text-center p-2">{university.name}</h1>
+<div class="max-w-2xl m-auto">
+    <img class="m-auto max-h-32" src={university.logoUrl} alt="Логотип" />
 
-<Programs universityId={university.id} />
+    <h1 class="text-2xl text-gray-800 text-center p-2">{university.name}</h1>
 
-<Activities universityId={university.id} />
+    <Programs universityId={university.id} />
+
+    <Activities universityId={university.id} />
+</div>

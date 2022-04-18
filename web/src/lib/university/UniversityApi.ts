@@ -1,5 +1,6 @@
 import { HttpClientToken } from "$lib/network/HttpClient"
 import { University } from "$lib/university/University"
+import { wrapResponseDataToArray } from "$lib/utils/Response"
 import type { AxiosInstance } from "axios"
 import { plainToInstance } from "class-transformer"
 import { inject, singleton } from "tsyringe"
@@ -15,7 +16,7 @@ export class UniversityApi {
     getUniversities = (): Promise<Array<University>> =>
         this.client
             .get("universities")
-            .then((response) => (Array.isArray(response.data) ? response.data : [response.data]))
+            .then(wrapResponseDataToArray)
             .then((universities) => plainToInstance(University, universities))
 
     getUniversity = (universityId: string): Promise<University | null> =>

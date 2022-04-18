@@ -10,8 +10,8 @@ import org.litote.kmongo.div
 import org.litote.kmongo.eq
 import org.litote.kmongo.group
 import org.litote.kmongo.match
-import ru.disenchanted.backend.domain.activity.Activity
 import ru.disenchanted.backend.domain.activity.ActivitySource
+import ru.disenchanted.backend.domain.activity.DescribedActivity
 import ru.disenchanted.backend.domain.activity.UniversityProgramActivitySource
 import ru.disenchanted.backend.domain.core.DispatchersProvider
 import ru.disenchanted.backend.domain.university.University
@@ -34,17 +34,26 @@ class DatabaseUniversityProgramActivitySource @Inject constructor(
 
     override suspend fun getUniversityActivities(
         universityId: String
-    ): List<Activity> = getUniversityProgramActivities(universityId, null)
+    ): List<DescribedActivity> = getUniversityProgramActivities(universityId, null)
 
     override suspend fun getUniversityProgramActivities(
         universityId: String,
         programId: String?
-    ): List<Activity> {
-        val activities = getUniversityProgramActivitiesEntities(universityId, programId)
+    ): List<DescribedActivity> {
+        val entities = getUniversityProgramActivitiesEntities(universityId, programId)
         val activitiesIds = withContext(dispatchersProvider.default) {
-            activities.map { it.id.activityId }
+            entities.values.map { entity ->
+                entity.id.activityId
+            }
         }
-        return activitySource.getActivitiesByIds(activitiesIds)
+        val activities = activitySource.getActivitiesByIds(activitiesIds)
+        return withContext(dispatchersProvider.default) {
+            activities.mapNotNull { activity ->
+                entities[activity.id]?.descriptions?.let { descriptions ->
+                    activity.describedWith(descriptions)
+                }
+            }
+        }
     }
 
     private suspend fun getActivityUniversityProgramsEntities(
@@ -52,37 +61,29 @@ class DatabaseUniversityProgramActivitySource @Inject constructor(
     ): List<UniversityAggregation> = withContext(dispatchersProvider.io) {
         collection.aggregate<UniversityAggregation>(
             match(
-                UniversityProgramActivityEntity::id /
-                    UniversityProgramActivityIdField::activityId eq
-                    activityId
+                UniversityProgramActivityEntity::id / UniversityProgramActivityId::activityId eq activityId
             ),
             group(
-                UniversityProgramActivityEntity::id / UniversityProgramActivityIdField::universityId
+                UniversityProgramActivityEntity::id / UniversityProgramActivityId::universityId
             )
-        )
-            .toList()
+        ).toList()
     }
 
     private suspend fun getUniversityProgramActivitiesEntities(
         universityId: String,
         programId: String?
-    ): List<UniversityProgramActivityEntity> = withContext(dispatchersProvider.io) {
+    ): Map<String, UniversityProgramActivityEntity> = withContext(dispatchersProvider.io) {
         val query = and(
-            UniversityProgramActivityEntity::id /
-                UniversityProgramActivityIdField::universityId eq
-                universityId,
-            UniversityProgramActivityEntity::id /
-                UniversityProgramActivityIdField::programId eq
-                programId
+            UniversityProgramActivityEntity::id / UniversityProgramActivityId::universityId eq universityId,
+            UniversityProgramActivityEntity::id / UniversityProgramActivityId::programId eq programId
         )
         collection.find(query)
             .toList()
+            .associateBy { it.id.activityId }
     }
 
     @Serializable
     private data class UniversityAggregation(
-        @Serializable
-        @SerialName("_id")
-        val universityId: String
+        @Serializable @SerialName("_id") val universityId: String
     )
 }

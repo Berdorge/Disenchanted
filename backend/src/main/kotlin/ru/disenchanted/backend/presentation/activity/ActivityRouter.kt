@@ -22,6 +22,14 @@ class ActivityRouter @Inject constructor(
             get("activities") {
                 getRootActivities(this)
             }
+            get("activities/{$ACTIVITY_ID}") {
+                val activityId = call.parameters[ACTIVITY_ID]
+                if (activityId == null) {
+                    call.respond(HttpStatusCode.BadRequest)
+                } else {
+                    getActivity(this, activityId)
+                }
+            }
             get("activities/{$ACTIVITY_ID}/children") {
                 val activityId = call.parameters[ACTIVITY_ID]
                 if (activityId == null) {
@@ -36,6 +44,15 @@ class ActivityRouter @Inject constructor(
     private suspend fun getRootActivities(context: DefaultContext) {
         val activities = activitySource.getRootActivities()
         context.call.respond(activities)
+    }
+
+    private suspend fun getActivity(context: DefaultContext, activityId: String) {
+        val activity = activitySource.getActivityById(activityId)
+        if (activity == null) {
+            context.call.respond(HttpStatusCode.NotFound)
+        } else {
+            context.call.respond(activity)
+        }
     }
 
     private suspend fun getChildActvities(context: DefaultContext, parentId: String) {
