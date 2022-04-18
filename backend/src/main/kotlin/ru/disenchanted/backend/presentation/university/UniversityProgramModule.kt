@@ -1,4 +1,4 @@
-package ru.disenchanted.backend.presentation.user
+package ru.disenchanted.backend.presentation.university
 
 import dagger.Binds
 import dagger.Module
@@ -8,10 +8,12 @@ import ru.disenchanted.backend.presentation.core.delegates.ApplicationDelegate
 import javax.inject.Singleton
 
 @Module
-interface UserModule {
+interface UniversityProgramModule {
     @Binds
     @Singleton
     @Router
     @IntoSet
-    fun bindUserRouter(userRouter: UserRouter): ApplicationDelegate
+    fun bindUniversityProgramRouter(
+        universityProgramRouter: UniversityProgramRouter
+    ): ApplicationDelegate
 }

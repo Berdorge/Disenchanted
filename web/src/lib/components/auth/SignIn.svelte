@@ -1,7 +1,7 @@
 <script lang="ts">
     import { session } from "$app/stores"
     import Button from "$lib/components/Button.svelte"
-    import { AuthApi } from "$lib/core/auth/AuthApi"
+    import { AuthApi } from "$lib/auth/AuthApi"
     import { COOKIE_JWT } from "$lib/core/cookies"
     import Cookies from "js-cookie"
     import { createEventDispatcher } from "svelte"

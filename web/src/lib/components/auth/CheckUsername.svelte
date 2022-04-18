@@ -1,6 +1,6 @@
 <script lang="ts">
     import Button from "$lib/components/Button.svelte"
-    import { UserApi } from "$lib/core/user/UserApi"
+    import { UserApi } from "$lib/user/UserApi"
     import { createEventDispatcher } from "svelte"
     import { container } from "tsyringe"
 

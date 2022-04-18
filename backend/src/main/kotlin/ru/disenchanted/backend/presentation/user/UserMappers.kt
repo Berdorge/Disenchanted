@@ -1,4 +1,6 @@
-package ru.disenchanted.backend.domain.user
+package ru.disenchanted.backend.presentation.user
+
+import ru.disenchanted.backend.domain.user.User
 
 fun User.withJwt(jwt: String) = ExposableUserWithJwt(
     id = id,
